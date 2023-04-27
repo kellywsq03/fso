@@ -1,59 +1,14 @@
-
-const Header = (props) => {
-  return (
-    <h1>{props.course}</h1>
-  )
-}
-
-const Part = (props) => {
-  return (
-    <p>
-      {props.part.name} {props.part.exercises}
-    </p>
-  )
-}
-
-const Content = (props) => {
-
-  return (
-    <div>
-      <Part part={props.parts[0]} />
-      <Part part={props.parts[1]} />
-      <Part part={props.parts[2]} />
-    </div>
-  )
-}
-
-const Total = (props) => {
-  return (
-    <p>Number of exercises {props.parts[0].exercises + props.parts[1].exercises + props.parts[2].exercises}</p>
-  )
-}
+import { useState } from 'react'
 
 const App = () => {
-  const course = {
-    name: 'Half Stack application development Test',
-    parts: [
-      {
-        name: 'Fundamentals of React',
-        exercises: 10
-      },
-      {
-        name: 'Using props to pass data',
-        exercises: 7
-      },
-      {
-        name: 'State of a component',
-        exercises: 14
-      }
-    ]
-  } 
-  
+  // save clicks of each button to its own state
+  const [good, setGood] = useState(0)
+  const [neutral, setNeutral] = useState(0)
+  const [bad, setBad] = useState(0)
+
   return (
     <div>
-      <Header course={course.name} />
-      <Content parts={course.parts} />
-      <Total parts={course.parts} />
+      code here
     </div>
   )
 }
