@@ -28,6 +28,25 @@ const App = () => {
   const [neutral, setNeutral] = useState(0)
   const [bad, setBad] = useState(0)
 
+  const calcAvg = (a, b, c) => {
+    if (a || b || c) {
+      return (a + c*-1) / (a + b + c)
+    } else {
+      return 0
+    }
+  }
+  let average = calcAvg(good, neutral, bad)
+
+  const calcPos = (a, b, c) => {
+    if (a || b || c) {
+      return (a / (a+b+c)) * 100
+    } else {
+      return 0
+    }
+  }
+
+  let positive = calcPos(good, neutral, bad) + "%"
+
   return (
     <div>
       <Header name="give feedback"/>
@@ -39,6 +58,9 @@ const App = () => {
       <Content text="good" value={good} />
       <Content text="neutral" value={neutral} />
       <Content text="bad" value={bad} />
+      <Content text="all" value={good + neutral + bad} />
+      <Content text="average" value={average} />
+      <Content text="positive" value={positive} />
     </div>
   )
 }
