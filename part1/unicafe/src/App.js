@@ -6,18 +6,18 @@ const Header = (props) => {
   )
 }
 
-const Button = (props) => {
+const Button = ({handleClick, text}) => {
   return (
-    <button onClick={props.handleClick}>
-      {props.text}
+    <button onClick={handleClick}>
+      {text}
     </button>
   )
 }
 
-const Content = (props) => {
+const StatisticLine = ({text, value}) => {
   return (
     <p>
-      {props.text} {props.value}
+      {text} {value}
     </p>
   )
 }
@@ -46,12 +46,12 @@ const Statistics = ({good, neutral, bad}) => {
     return (
       <div>
         <Header name="statistics"/>
-        <Content text="good" value={good} />
-        <Content text="neutral" value={neutral} />
-        <Content text="bad" value={bad} />
-        <Content text="all" value={good + neutral + bad} />
-        <Content text="average" value={average} />
-        <Content text="positive" value={positive} />
+        <StatisticLine text="good" value={good} />
+        <StatisticLine text="neutral" value={neutral} />
+        <StatisticLine text="bad" value={bad} />
+        <StatisticLine text="all" value={good + neutral + bad} />
+        <StatisticLine text="average" value={average} />
+        <StatisticLine text="positive" value={positive} />
       </div>
     )
   } else {
