@@ -42,17 +42,29 @@ const Statistics = ({good, neutral, bad}) => {
 
   let positive = calcPos(good, neutral, bad) + "%"
 
-  return (
-    <div>
-      <Header name="statistics"/>
-      <Content text="good" value={good} />
-      <Content text="neutral" value={neutral} />
-      <Content text="bad" value={bad} />
-      <Content text="all" value={good + neutral + bad} />
-      <Content text="average" value={average} />
-      <Content text="positive" value={positive} />
-    </div>
-  )
+  if (good || neutral || bad) {
+    return (
+      <div>
+        <Header name="statistics"/>
+        <Content text="good" value={good} />
+        <Content text="neutral" value={neutral} />
+        <Content text="bad" value={bad} />
+        <Content text="all" value={good + neutral + bad} />
+        <Content text="average" value={average} />
+        <Content text="positive" value={positive} />
+      </div>
+    )
+  } else {
+    return (
+      <div>
+        <Header name="statistics"/>
+        <p>
+          No feedback given
+        </p>
+      </div>
+    )
+  }
+  
 }
 
 const App = () => {
@@ -68,8 +80,6 @@ const App = () => {
       <Button handleClick={() => setNeutral(neutral + 1)} text="neutral" />
       <Button handleClick={() => setBad(bad + 1)} text="bad" />
       <Statistics good={good} neutral={neutral} bad={bad} />
-      
-
     </div>
   )
 }
