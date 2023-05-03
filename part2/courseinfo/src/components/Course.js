@@ -15,11 +15,22 @@ const Part = ({ part }) =>
       {part.name} {part.exercises}
   </p>
 
+const Sum = ({ parts }) => {
+    return (
+        <p>
+            Total of {parts.reduce(
+                (sum, part) => (sum + part.exercises), 0
+            )} exercises
+        </p>
+    )
+}
+
 const Course = ({course}) => {
   return (
     <div>
         <Header name={course.name} />
         <Content parts={course.parts} />
+        <Sum parts={course.parts} />
     </div>
   )
 }
