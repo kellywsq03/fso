@@ -6,10 +6,19 @@ import personService from './services/persons.js'
 
 const App = () => {
   const [persons, setPersons] = useState([]) 
-  
   const [newFilter, setNewFilter] = useState('')
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
+
+  const deletePerson = (person) => {
+    if (window.confirm(`Delete ${person.name} ?`)) {
+      personService
+        .deleteObject(person.id)
+        .then(deletedPerson => {
+          setPersons(persons.filter(person => person.id !== deletedPerson.id))
+        })
+    }
+  }
 
   const handleFilterChange = (event) => {
     setNewFilter(event.target.value)
@@ -48,7 +57,17 @@ const App = () => {
     })
 
     if (isName) {
-      alert(`${newName} is already added to phonebook`)
+      // Update number for existing person
+      if (window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)) {
+        const person = persons.find(person => person.name.toLowerCase() === newName.toLowerCase())
+        const updatedPerson = { ...person, number: newNumber }
+        console.log(updatedPerson)
+        personService
+          .update(updatedPerson)
+          .then(returnedPerson => {
+            setPersons(persons.map(person => person.id !== returnedPerson.id ? person : returnedPerson))
+          })
+      }
     }
     else if (isNumber) {
       alert(`${newNumber} is already added to phonebook`)
@@ -69,7 +88,6 @@ const App = () => {
     personService
       .getAll()
       .then(initialPersons => {
-        console.log(initialPersons)
         setPersons(initialPersons)
       })
   }, [])
@@ -91,7 +109,7 @@ const App = () => {
       
       <h3>Numbers</h3>
       
-      <Persons persons={personsToShow}/>
+      <Persons persons={personsToShow} deletePerson={deletePerson} />
     
     </div>
   )
