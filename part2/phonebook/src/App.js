@@ -11,8 +11,8 @@ const Notification = ({ message }) => {
   }
 
   return (
-    <div className='error'>
-      {message}
+    <div className={message.messageType}>
+      {message.message}
     </div>
   )
 }
@@ -24,12 +24,12 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('')
   const [newNotif, setNewNotif] = useState(null)
 
-  const deletePerson = (person) => {
-    if (window.confirm(`Delete ${person.name} ?`)) {
+  const deletePerson = (personToDelete) => {
+    if (window.confirm(`Delete ${personToDelete.name} ?`)) {
       personService
-        .deleteObject(person.id)
-        .then(deletedPerson => {
-          setPersons(persons.filter(person => person.id !== deletedPerson.id))
+        .deleteObject(personToDelete.id)
+        .then(repsonse => {
+          setPersons(persons.filter(person => person.id !== personToDelete.id))
         })
     }
   }
@@ -81,6 +81,13 @@ const App = () => {
           .then(returnedPerson => {
             setPersons(persons.map(person => person.id !== returnedPerson.id ? person : returnedPerson))
           })
+          .catch(error => {
+            console.log('fail')
+            setNewNotif({
+              message: `Information of ${updatedPerson.name} has already been removed from the server`,
+              messageType: 'error'
+            })
+          })
       }
     }
     else if (isNumber) {
@@ -92,7 +99,10 @@ const App = () => {
         .create(personObject)
         .then(returnedPerson => {
           setPersons(persons.concat(returnedPerson))
-          setNewNotif(`Added ${newName}`)
+          setNewNotif({
+            message: `Added ${newName}`,
+            messageType: 'success'
+          })
           setTimeout(() => {
             setNewNotif(null)
           }, 2000)
