@@ -3,12 +3,26 @@ import Filter from './components/Filter.js'
 import PersonForm from './components/PersonForm.js'
 import Persons from './components/Persons.js'
 import personService from './services/persons.js'
+import './index.css'
+
+const Notification = ({ message }) => {
+  if (message === null) {
+    return null
+  }
+
+  return (
+    <div className='error'>
+      {message}
+    </div>
+  )
+}
 
 const App = () => {
   const [persons, setPersons] = useState([]) 
   const [newFilter, setNewFilter] = useState('')
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
+  const [newNotif, setNewNotif] = useState(null)
 
   const deletePerson = (person) => {
     if (window.confirm(`Delete ${person.name} ?`)) {
@@ -61,7 +75,7 @@ const App = () => {
       if (window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)) {
         const person = persons.find(person => person.name.toLowerCase() === newName.toLowerCase())
         const updatedPerson = { ...person, number: newNumber }
-        console.log(updatedPerson)
+        
         personService
           .update(updatedPerson)
           .then(returnedPerson => {
@@ -78,6 +92,10 @@ const App = () => {
         .create(personObject)
         .then(returnedPerson => {
           setPersons(persons.concat(returnedPerson))
+          setNewNotif(`Added ${newName}`)
+          setTimeout(() => {
+            setNewNotif(null)
+          }, 2000)
           setNewName("")
           setNewNumber("")
         })
@@ -96,6 +114,8 @@ const App = () => {
     <div>
       <h2>Phonebook</h2>
       
+      <Notification message={newNotif} />
+
       <Filter newFilter={newFilter} handleFilterChange={handleFilterChange} />
       
       <h3>add a new</h3>
