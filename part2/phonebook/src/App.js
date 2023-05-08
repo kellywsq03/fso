@@ -24,16 +24,7 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('')
   const [newNotif, setNewNotif] = useState(null)
 
-  const deletePerson = (personToDelete) => {
-    if (window.confirm(`Delete ${personToDelete.name} ?`)) {
-      personService
-        .deleteObject(personToDelete.id)
-        .then(repsonse => {
-          setPersons(persons.filter(person => person.id !== personToDelete.id))
-        })
-    }
-  }
-
+  // Filter persons
   const handleFilterChange = (event) => {
     setNewFilter(event.target.value)
   }  
@@ -42,6 +33,8 @@ const App = () => {
     ? persons.filter(person => person.name.toLowerCase() === newFilter.toLowerCase())
     : persons
 
+  
+  // Event handlers
   const handleNameChange = (event) => {
     setNewName(event.target.value)
   }
@@ -108,6 +101,16 @@ const App = () => {
           }, 2000)
           setNewName("")
           setNewNumber("")
+        })
+    }
+  }
+
+  const deletePerson = (personToDelete) => {
+    if (window.confirm(`Delete ${personToDelete.name} ?`)) {
+      personService
+        .deleteObject(personToDelete.id)
+        .then(response => {
+          setPersons(persons.filter(person => person.id !== personToDelete.id))
         })
     }
   }
